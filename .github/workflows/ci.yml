@@ -44,8 +44,8 @@ jobs:
           
           echo "Verifying main files exist..."
           test -f dist/background.js
-          test -f dist/sidebar.js
-          test -f dist/sidebar.html
+          test -f dist/sidebar/sidebar.js
+          test -f dist/sidebar/sidebar.html
           
           echo "✅ All build artifacts verified!"
       

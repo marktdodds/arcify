@@ -8,16 +8,16 @@ import { build } from 'vite';
  */
 function getExtensionInputs() {
   return {
-    sidebar: resolve(process.cwd(), 'sidebar.html'),
+    sidebar: resolve(process.cwd(), 'sidebar/sidebar.html'),
     options: resolve(process.cwd(), 'options.html'),
-    onboarding: resolve(process.cwd(), 'onboarding.html'),
-    'installation-onboarding': resolve(process.cwd(), 'installation-onboarding.html'),
+    onboarding: resolve(process.cwd(), 'onboarding/onboarding.html'),
+    'installation-onboarding': resolve(process.cwd(), 'onboarding/installation-onboarding.html'),
     // Note: newtab.html is handled separately in the build plugin
     background: resolve(process.cwd(), 'background.js'),
-    'sidebar-script': resolve(process.cwd(), 'sidebar.js'),
+    'sidebar-script': resolve(process.cwd(), 'sidebar/sidebar.js'),
     'options-script': resolve(process.cwd(), 'options.js'),
-    'onboarding-script': resolve(process.cwd(), 'onboarding.js'),
-    'installation-onboarding-script': resolve(process.cwd(), 'installation-onboarding.js'),
+    'onboarding-script': resolve(process.cwd(), 'onboarding/onboarding.js'),
+    'installation-onboarding-script': resolve(process.cwd(), 'onboarding/installation-onboarding.js'),
   };
 }
 

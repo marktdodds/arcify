@@ -56,8 +56,8 @@ const Utils = {
 
     // Helper function to fetch favicon
     getFaviconUrl: function (u, size = "16") {
-        if (!u) {
-            return 'assets/default_icon.png';
+        if (!u || u.startsWith('chrome://')) {
+            return '/assets/default_icon.png';
         }
 
         try {
@@ -75,7 +75,7 @@ const Utils = {
         } catch (e) {
         }
 
-        return 'assets/default_icon.png';
+        return '/assets/default_icon.png';
     },
 
     getSettings: async function () {

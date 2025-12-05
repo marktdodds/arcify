@@ -1,5 +1,5 @@
 // Installation Onboarding Flow
-import { Logger } from './logger.js';
+import { Logger } from '../logger.js';
 
 class InstallationOnboarding {
     constructor() {

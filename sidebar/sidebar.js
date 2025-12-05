@@ -13,13 +13,13 @@
  * - Manages archived tabs and auto-archive settings
  */
 
-import { ChromeHelper } from './chromeHelper.js';
-import { FOLDER_CLOSED_ICON, FOLDER_OPEN_ICON } from './icons.js';
-import { LocalStorage } from './localstorage.js';
-import { Utils } from './utils.js';
-import { setupDOMElements, showSpaceNameInput, activateTabInDOM, activateSpaceInDOM, showTabContextMenu, showArchivedTabsPopup, setupQuickPinListener } from './domManager.js';
-import { BookmarkUtils } from './bookmark-utils.js';
-import { Logger } from './logger.js';
+import { ChromeHelper } from '../chromeHelper.js';
+import { FOLDER_CLOSED_ICON, FOLDER_OPEN_ICON } from '../icons.js';
+import { LocalStorage } from '../localstorage.js';
+import { Utils } from '../utils.js';
+import { setupDOMElements, showSpaceNameInput, activateTabInDOM, activateSpaceInDOM, showTabContextMenu, showArchivedTabsPopup, setupQuickPinListener } from '../domManager.js';
+import { BookmarkUtils } from '../bookmark-utils.js';
+import { Logger } from '../logger.js';
 
 // Constants
 const MouseButton = {
@@ -163,7 +163,7 @@ async function updatePinnedFavicons() {
             img.src = Utils.getFaviconUrl(tab.url, "96");
             img.onerror = () => {
                 img.src = tab.favIconUrl;
-                img.onerror = () => { img.src = 'assets/default_icon.png'; }; // Fallback favicon
+                img.onerror = () => { img.src = '/assets/default_icon.png'; }; // Fallback favicon
             };
             img.alt = tab.title;
 
@@ -2247,7 +2247,7 @@ async function createTabElement(tab, isPinned = false, isBookmarkOnly = false) {
     favicon.classList.add('tab-favicon');
     favicon.onerror = () => {
         favicon.src = tab.favIconUrl;
-        favicon.onerror = () => { favicon.src = 'assets/default_icon.png'; }; // Fallback favicon
+        favicon.onerror = () => { favicon.src = '/assets/default_icon.png'; }; // Fallback favicon
     }; // Fallback favicon
 
     // Set up action button
@@ -2709,7 +2709,7 @@ function handleTabUpdate(tabId, changeInfo, tab) {
                     img.src = tab.favIconUrl;
                     img.onerror = () => {
                         img.src = tab.favIconUrl;
-                        img.onerror = () => { img.src = 'assets/default_icon.png'; }; // Fallback favicon
+                        img.onerror = () => { img.src = '/assets/default_icon.png'; }; // Fallback favicon
                     };
                 }
             }

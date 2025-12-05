@@ -45,10 +45,10 @@ chrome.runtime.onInstalled.addListener(async (details) => {
     if (!result.onboardingCompleted || result.onboardingCompleted < new Date().getTime() - 1000 * 60 * 60 * 60 * 24 * 7) {
         if (details.reason === 'install') {
             // Check if onboarding has been completed before
-            chrome.tabs.create({ url: 'installation-onboarding.html', active: true });
+            chrome.tabs.create({ url: 'onboarding/installation-onboarding.html', active: true });
             chrome.storage.sync.set({ onboardingCompleted: new Date().getTime() });
         } else if (details.reason === 'update') {
-            chrome.tabs.create({ url: 'installation-onboarding.html', active: true });
+            chrome.tabs.create({ url: 'onboarding/installation-onboarding.html', active: true });
             chrome.storage.sync.set({ onboardingCompleted: new Date().getTime() });
         }
     }
