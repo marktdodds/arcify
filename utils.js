@@ -56,10 +56,17 @@ const Utils = {
 
     // Helper function to fetch favicon
     getFaviconUrl: function (u, size = "16") {
-        const url = new URL(chrome.runtime.getURL("/_favicon/"));
-        url.searchParams.set("pageUrl", u);
-        url.searchParams.set("size", size);
-        return url.toString();
+        if (!u) {
+            return 'assets/default_icon.png';
+        }
+        
+        try {
+            const url = new URL(u);
+            // Use Google's favicon service as alternative to chrome://favicon
+            return `https://www.google.com/s2/favicons?domain=${url.hostname}&sz=${size}`;
+        } catch (e) {
+            return 'assets/default_icon.png';
+        }
     },
 
     getSettings: async function () {

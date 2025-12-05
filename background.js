@@ -36,14 +36,21 @@ chrome.sidePanel.setPanelBehavior({
 
 // Listen for extension installation
 chrome.runtime.onInstalled.addListener(async (details) => {
-    if (details.reason === 'install') {
-        // Check if onboarding has been completed before
-        const result = await chrome.storage.sync.get(['onboardingCompleted']);
-        if (!result.onboardingCompleted) {
+    const result = await chrome.storage.sync.get(['onboardingCompleted']);
+
+    if (isNaN(result.onboardingCompleted)) {
+        result.onboardingCompleted = 0;
+    }
+
+    if (!result.onboardingCompleted || result.onboardingCompleted < new Date().getTime() - 1000 * 60 * 60 * 60 * 24 * 7) {
+        if (details.reason === 'install') {
+            // Check if onboarding has been completed before
             chrome.tabs.create({ url: 'installation-onboarding.html', active: true });
+            chrome.storage.sync.set({ onboardingCompleted: new Date().getTime() });
+        } else if (details.reason === 'update') {
+            chrome.tabs.create({ url: 'installation-onboarding.html', active: true });
+            chrome.storage.sync.set({ onboardingCompleted: new Date().getTime() });
         }
-    } else if (details.reason === 'update') {
-        chrome.tabs.create({ url: 'installation-onboarding.html', active: true });
     }
 
     if (chrome.contextMenus) {
@@ -184,7 +191,7 @@ async function injectSpotlightScript(spotlightTabMode) {
             // If not, skip directly to custom new tab fallback
             if (!supportsContentScripts(tab.url)) {
                 Logger.log("Tab URL doesn't support content scripts, opening custom new tab directly:", tab.url);
-                await fallbackToChromeTabs(spotlightTabMode);
+                await fallbackToChromeTabs(spotlightTabMode, tab.id);
                 return;
             }
             // PRIMARY: Try to send activation message to dormant content script
@@ -220,7 +227,7 @@ async function injectSpotlightScript(spotlightTabMode) {
 }
 
 // Helper function for Chrome tab fallback when spotlight injection fails
-async function fallbackToChromeTabs(spotlightTabMode) {
+async function fallbackToChromeTabs(spotlightTabMode, tabId) {
     try {
         // First, close any existing spotlights in tracked tabs
         await closeSpotlightInTrackedTabs();
@@ -230,7 +237,7 @@ async function fallbackToChromeTabs(spotlightTabMode) {
         // Open custom new tab page with spotlight
         // This provides a better UX than chrome://newtab/ since users can still use spotlight
         // even when it cannot be injected on restricted pages (chrome://, extension pages, etc.)
-        await chrome.tabs.create({ url: chrome.runtime.getURL('spotlight/newtab.html'), active: true });
+        await chrome.tabs.update(tabId, { url: chrome.runtime.getURL('spotlight/newtab.html'), active: true });
         Logger.log("Spotlight failed - opened custom new tab with spotlight interface");
 
     } catch (chromeTabError) {
@@ -536,7 +543,6 @@ chrome.tabs.onRemoved.addListener(async (tabId, removeInfo) => {
 
 // Optional: Listen for messages from options page to immediately update alarm
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-
     if (message.action === 'updateAutoArchiveSettings') {
         Logger.log("Received message to update auto-archive settings.");
         setupAutoArchiveAlarm();
@@ -553,7 +559,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
                 if (tab && tab.url && tab.url.includes('newtab.html')) {
                     // Navigate to Chrome's default new tab page
-                    await chrome.tabs.update(tab.id, { url: 'chrome://new-tab-page/' });
+                    await chrome.tabs.update(tab.id, { url: 'asdf.html' });
                 }
                 sendResponse({ success: true });
             } catch (error) {
