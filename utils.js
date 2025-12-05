@@ -59,14 +59,23 @@ const Utils = {
         if (!u) {
             return 'assets/default_icon.png';
         }
+
+        try {
+            const url = new URL(`chrome://favicon/size/${size}/${u}`);
+            // Try multiple favicon sources with fallback chain
+            // First try the standard /favicon.ico location
+            return url.toString();
+        } catch (e) {
+        }
         
         try {
             const url = new URL(u);
             // Use Google's favicon service as alternative to chrome://favicon
             return `https://www.google.com/s2/favicons?domain=${url.hostname}&sz=${size}`;
         } catch (e) {
-            return 'assets/default_icon.png';
         }
+
+        return 'assets/default_icon.png';
     },
 
     getSettings: async function () {

@@ -15,7 +15,8 @@
     "search",
     "topSites",
     "history",
-    "clipboardWrite"
+    "clipboardWrite",
+    "favicon"
   ],
   "side_panel": {
     "default_path": "sidebar.html"
